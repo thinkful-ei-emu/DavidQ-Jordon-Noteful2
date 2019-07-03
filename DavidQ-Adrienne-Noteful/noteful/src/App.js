@@ -28,14 +28,21 @@ export default class App extends React.Component {
           folders: data[0],
           notes: data[1]
         })
-      })
+      }).catch((error)=>{
+        alert(error.message);
+      });
   }
 
   deleteNote = (noteId) => {
     Api.doFetch('notes', noteId, 'DELETE')
-      .then(() => this.setState({
+      .then(() => {
+        this.setState({
         notes: this.state.notes.filter((target) => target.id !== noteId)
-      }))
+      });
+
+    }).catch((error)=>{
+      alert(error.message);
+    });
   }
 
   render() {
@@ -51,7 +58,7 @@ export default class App extends React.Component {
             <Route path='/note/:noteId' component={Navigation} />
           </div>
           <div className='col-3'>
-            <noteContext.Provider value={{ notes: this.state.notes }}>
+            <noteContext.Provider value={{ notes: this.state.notes, deleteNote:this.deleteNote }}>
               <Route exact path="/" render={(props) => { return <Main {...props} notes={this.state.notes} /> }} />
               <Route path="/folder/:folderId" render={(props) => {
                 return <List {...props} folderId={props.match.params.folderId} />

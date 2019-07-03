@@ -1,15 +1,24 @@
 import React from 'react';
 import '../css/note.css';
+import noteContext from './noteContext';
 
 export default function Note(props) {
 
+
   return (
-    <div className="note col-full">
+    <noteContext.Consumer>{(context)=>(
+    <div className="note col-full container">
+      <div className="col-center">
       <p>{props.name}</p>
       <p>Date modified on {new Date(props.modified).toDateString()}</p>
-      <button onClick={() => props.deleteNote(props.id)}>Delete</button>
+      </div>
+      <button className="col-center" onClick={() =>{
+        context.deleteNote(props.id)
+        props.history.push('/');
+        }}>Delete</button>
     </div>
-  )
+  )}
+    </noteContext.Consumer>)
 
 }
 
