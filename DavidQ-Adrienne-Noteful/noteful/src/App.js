@@ -29,7 +29,13 @@ export default class App extends React.Component {
           notes: data[1]
         })
       })
+  }
 
+  deleteNote = (noteId) => {
+    Api.doFetch('notes', noteId, 'DELETE')
+      .then(() => this.setState({
+        notes: this.state.notes.filter((target) => target.id !== noteId)
+      }))
   }
 
   render() {
@@ -45,18 +51,18 @@ export default class App extends React.Component {
             <Route path='/note/:noteId' component={Navigation} />
           </div>
           <div className='col-3'>
-            <noteContext.Provider value={{ notes: this.state.notes, }}>
+            <noteContext.Provider value={{ notes: this.state.notes }}>
               <Route exact path="/" render={(props) => { return <Main {...props} notes={this.state.notes} /> }} />
-            <Route path="/folder/:folderId" render={(props) => {
-              return <List {...props} folderId={props.match.params.folderId} />
-            }} />
-            
-            <Route path="/note/:noteId" render={(props) => {
-              return <NotePage {...props} notes={this.state.notes.find((note) => {
-                return note.id === props.match.params.noteId
-              })} />
-            }} folderId={this.state.notes.folderId} />
-            </noteContext.Provider> 
+              <Route path="/folder/:folderId" render={(props) => {
+                return <List {...props} folderId={props.match.params.folderId} />
+              }} />
+
+              <Route path="/note/:noteId" render={(props) => {
+                return <NotePage {...props} notes={this.state.notes.find((note) => {
+                  return note.id === props.match.params.noteId
+                })} />
+              }} folderId={this.state.notes.folderId} />
+            </noteContext.Provider>
             <Route path="/" Component={Error} />
           </div>
         </main>
