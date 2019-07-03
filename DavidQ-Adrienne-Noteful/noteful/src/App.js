@@ -47,19 +47,16 @@ export default class App extends React.Component {
           <div className='col-3'>
             <noteContext.Provider value={{ notes: this.state.notes, }}>
               <Route exact path="/" render={(props) => { return <Main {...props} notes={this.state.notes} /> }} />
-            </noteContext.Provider>
-            {/* <noteContext.Provider value={{ notes: this.state.notes.filter((note) => { return note.folderId === props.match.params.folderId }), folderId: props.match.params.folderId }}> */}
             <Route path="/folder/:folderId" render={(props) => {
-              return <List {...props} notes={this.state.notes.filter((note) => {
-                return note.folderId === props.match.params.folderId
-              })} folderId={props.match.params.folderId} />
+              return <List {...props} folderId={props.match.params.folderId} />
             }} />
-            {/* </noteContext.Provider> */}
+            
             <Route path="/note/:noteId" render={(props) => {
               return <NotePage {...props} notes={this.state.notes.find((note) => {
                 return note.id === props.match.params.noteId
               })} />
             }} folderId={this.state.notes.folderId} />
+            </noteContext.Provider> 
             <Route path="/" Component={Error} />
           </div>
         </main>
