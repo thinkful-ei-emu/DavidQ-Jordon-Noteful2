@@ -13,12 +13,11 @@ if (props.folders) {folders = props.folders.map((folder,index)=>{
     </NavLink>)
   });
 }
-console.log(<NavLink to="/"/>);
  return (
    <div className="side-bar">
      {!props.folders && <button onClick={()=> props.history.goBack()}>Go Back</button>}
      {folders}
-     {props.folders && <button>add Folder</button>}
+     {props.folders && <button onClick={(e)=>{props.addFolder(prompt('Folder Name:'))}}>add Folder</button>}
    </div>
  )
 }

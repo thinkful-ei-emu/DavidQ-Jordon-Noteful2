@@ -7,6 +7,7 @@ import Navigation from './components/Navigation';
 import Main from './components/Main';
 import NotePage from './components/NotePage';
 import Api from './components/Api';
+import AddNote from './components/AddNote';
 //--------------CSS
 import './css/grid.css';
 import Error from './components/Error';
@@ -44,6 +45,22 @@ export default class App extends React.Component {
       alert(error.message);
     });
   }
+  addNote =(name,content,folderId) =>{
+    Api.doFetch('folders',folderId,'POST',JSON.stringify({name,content}))
+    .then((res)=>{
+      this.setState({
+        notes: [...this.state.notes, res]
+      })
+    }).catch(console.log);
+  }
+  addFolder = (name)=>{
+    Api.doFetch('folders','','POST',JSON.stringify({name}))
+      .then(res=>{
+        this.setState({
+          folders: [...this.state.folders, res[0]]
+        })
+      }).catch(console.log);
+  }
 
   render() {
     return (
@@ -53,21 +70,20 @@ export default class App extends React.Component {
         </header>
         <main className="container">
           <div className='col'>
-            <Route exact path="/" render={(props) => { return <Navigation {...props} folders={this.state.folders} /> }} />
-            <Route path="/folder/:folderId" render={(props) => { return <Navigation {...props} folders={this.state.folders} /> }} />
+            <Route exact path="/" render={(props) => { return <Navigation {...props} addFolder={this.addFolder} folders={this.state.folders} /> }} />
+            <Route path="/folder/:folderId" render={(props) => { return <Navigation {...props} addFolder={this.addFolder} folders={this.state.folders} /> }} />
             <Route path='/note/:noteId' component={Navigation} />
           </div>
           <div className='col-3'>
-            <noteContext.Provider value={{ notes: this.state.notes, deleteNote:this.deleteNote }}>
+            <noteContext.Provider value={{ notes: this.state.notes, deleteNote:this.deleteNote, addNotes:this.addNote }}>
               <Route exact path="/" render={(props) => { return <Main {...props} notes={this.state.notes} /> }} />
               <Route path="/folder/:folderId" render={(props) => {
-                return <List {...props} folderId={props.match.params.folderId} />
+                return (<div><AddNote/><List {...props} notes={this.state.notes.filter((note)=>String(note.folder_id) === window.location.pathname.split('/')[2])} folderId={props.match.params.folderId} /></div>)
               }} />
-
               <Route path="/note/:noteId" render={(props) => {
-                return <NotePage {...props} notes={this.state.notes.find((note) => {
-                  return note.id === props.match.params.noteId
-                })} />
+                return <NotePage {...props} note={this.state.notes.find((note) => {
+                  return String(note.id) === props.match.params.noteId
+                }) || {name:'invalid note'}} />
               }} folderId={this.state.notes.folderId} />
             </noteContext.Provider>
             <Route path="/" Component={Error} />

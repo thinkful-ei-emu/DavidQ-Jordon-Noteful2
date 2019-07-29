@@ -9,10 +9,7 @@ export default function List(props) {
  return (
    <noteContext.Consumer>{(context)=>(
    <div className="list container col-3">
-     {context.notes.filter((note)=>{
-       console.log(props) 
-       if(props.match){return props.match.params.folderId === note.folderId}else return true;
-     }).map((note, index) => {
+     {context.notes.map((note, index) => {
     return(<div key={index} className='col-full'><Link  to={'/note/' + note.id}><Note name={note.name} id={note.id} modified={note.modified} folderId={note.folderId} /></Link></div>)
   })}
      <button className='col-center'>Add Note</button>

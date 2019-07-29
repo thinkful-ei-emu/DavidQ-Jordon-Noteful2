@@ -1,7 +1,7 @@
 
 
 class Api {
-    static endPoint = 'http://localhost:9090/';
+    static endPoint = 'https://secure-peak-62135.herokuapp.com/';
 
 
 
@@ -21,10 +21,10 @@ class Api {
                 if (res.ok) {
                     return res.json();
                 } else {
-                    Promise.reject(new Error(res.statusText));
+                    Promise.reject(new Error(res.body));
                 }
             })
-            .then(data => data)
+            .then(data => data).catch(console.log);
     }
 }
 
