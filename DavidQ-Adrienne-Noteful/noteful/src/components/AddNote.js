@@ -12,9 +12,9 @@ export default function AddNote(props) {
       }}>
        <h3>Add New Note</h3>
        <label htmlFor="newNote">name: </label>
-       <input name="newNote" type="text" placeholder="Note Name"></input><br/>
+       <input id="newNote" name="newNote" type="text" placeholder="Note Name"></input><br/>
        <label htmlFor="content">content: </label>
-       <input name="content" type="text" placeholder="Note content"></input>
+       <input id="content" name="content" type="text" placeholder="Note content"></input>
       <br/>
        <button type="submit">Add</button>
      </form>
