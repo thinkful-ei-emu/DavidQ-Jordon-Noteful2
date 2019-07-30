@@ -2,6 +2,7 @@ import React from 'react';
 import Folder from './Folder';
 import {NavLink} from 'react-router-dom';
 import AddFolder from './AddFolder';
+import SubmitError from './SubmitError';
 import '../css/Nav.css'
 export default class Navigation extends React.Component{
   state= {show:false};
@@ -26,8 +27,10 @@ if (this.props.folders) {folders = this.props.folders.map((folder,index)=>{
     <div className="side-bar">
       {!this.props.folders && <button onClick={()=> this.props.history.goBack()}>Go Back</button>}
       {folders}
+      <SubmitError>
   {!this.state.show && this.props.folders && <button onClick={()=>this.setState({show:!this.state.show})}>add Folder</button>}
       {this.state.show && <AddFolder addFolder = {this.props.addFolder} flip={this.flipShow}/>}
+      </SubmitError>
     </div>
   )
   }
