@@ -3,6 +3,6 @@ import List from './List';
 export default function Main(props){
 
   return(
-    <List notes = {props.notes}/>
+    <List {...props} notes = {props.notes}/>
   );
 }

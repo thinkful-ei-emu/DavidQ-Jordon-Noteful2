@@ -9,7 +9,7 @@ let folders = '';
 if (props.folders) {folders = props.folders.map((folder,index)=>{
     return (
     <NavLink className="Nav" isActive={()=>window.location.pathname === "/folder/"+ folder.id }  key={index} to = {"/folder/"+ folder.id}>
-    <Folder  id={folder.id} name={folder.name}/>
+    <Folder deleteFolder={props.deleteFolder} id={folder.id} name={folder.name}/>
     </NavLink>)
   });
 }

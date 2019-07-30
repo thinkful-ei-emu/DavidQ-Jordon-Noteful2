@@ -48,14 +48,24 @@ export default class App extends React.Component {
   addNote =(name,content,folderId) =>{
     Api.doFetch('folders',folderId,'POST',JSON.stringify({name,content}))
     .then((res)=>{
+      console.log('new note from server:', res);
       this.setState({
-        notes: [...this.state.notes, res]
+        notes: [...this.state.notes, res[0]]
       })
     }).catch(console.log);
+  }
+  deleteFolder =(folderId)=>{
+    Api.doFetch('folders',folderId,'DELETE').then((result)=>{
+      this.setState({
+        folders: this.state.folders.filter((folder)=>folder.id !== folderId)
+      })
+    });
+
   }
   addFolder = (name)=>{
     Api.doFetch('folders','','POST',JSON.stringify({name}))
       .then(res=>{
+        
         this.setState({
           folders: [...this.state.folders, res[0]]
         })
@@ -70,15 +80,15 @@ export default class App extends React.Component {
         </header>
         <main className="container">
           <div className='col'>
-            <Route exact path="/" render={(props) => { return <Navigation {...props} addFolder={this.addFolder} folders={this.state.folders} /> }} />
-            <Route path="/folder/:folderId" render={(props) => { return <Navigation {...props} addFolder={this.addFolder} folders={this.state.folders} /> }} />
+            <Route exact path="/" render={(props) => { return <Navigation {...props} addFolder={this.addFolder} deleteFolders={this.deleteFolder} folders={this.state.folders} /> }} />
+            <Route path="/folder/:folderId" render={(props) => { return <Navigation {...props} deleteFolder={this.deleteFolder} addFolder={this.addFolder} folders={this.state.folders} /> }} />
             <Route path='/note/:noteId' component={Navigation} />
           </div>
           <div className='col-3'>
             <noteContext.Provider value={{ notes: this.state.notes, deleteNote:this.deleteNote, addNotes:this.addNote }}>
               <Route exact path="/" render={(props) => { return <Main {...props} notes={this.state.notes} /> }} />
               <Route path="/folder/:folderId" render={(props) => {
-                return (<div><AddNote/><List {...props} notes={this.state.notes.filter((note)=>String(note.folder_id) === window.location.pathname.split('/')[2])} folderId={props.match.params.folderId} /></div>)
+                return (<div><AddNote {...props}/><List {...props} notes={this.state.notes.filter((note)=>String(note.folder_id) === window.location.pathname.split('/')[2])} folderId={props.match.params.folderId} /></div>)
               }} />
               <Route path="/note/:noteId" render={(props) => {
                 return <NotePage {...props} note={this.state.notes.find((note) => {

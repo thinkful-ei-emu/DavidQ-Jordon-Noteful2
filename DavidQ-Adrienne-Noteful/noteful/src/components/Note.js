@@ -10,9 +10,11 @@ export default function Note(props) {
     <div className="note col-full container">
       <div className="col-center">
       <p>{props.name}</p>
-      <p>Date modified on {new Date(props.modified).toDateString()}</p>
+      <p>Date modified on {new Date(props.modified).toUTCString()}</p>
       </div>
-      <button className="col-center" onClick={() =>{
+      <button className="col-center" onClick={(e) =>{
+        e.preventDefault();
+        e.stopPropagation();
         context.deleteNote(props.id)
         props.history.push('/');
         }}>Delete</button>
