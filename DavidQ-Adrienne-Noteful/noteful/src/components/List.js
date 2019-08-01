@@ -10,7 +10,7 @@ export default function List(props) {
    <noteContext.Consumer>{(context)=>(
    <div className="list container col-3">
      {context.notes.map((note, index) => {
-    return(<div key={index} className='col-full'><Link  to={'/note/' + note.id}><Note {...props} name={note.name} id={note.id} modified={note.modified} folderId={note.folderId} /></Link></div>)
+    return(<div key={index} className='col-full'><Link  to={'/note/' + note.id}><Note {...props} name={note.name} id={note.id} modified={note.date_created} folderId={note.folderId} /></Link></div>)
   })}
    </div>)}
    </noteContext.Consumer>

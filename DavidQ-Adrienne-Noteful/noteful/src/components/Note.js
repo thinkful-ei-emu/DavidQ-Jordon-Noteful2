@@ -4,13 +4,13 @@ import noteContext from './noteContext';
 
 export default function Note(props) {
 
-
+  console.log(props.modified);
   return (
     <noteContext.Consumer>{(context)=>(
     <div className="note col-full container">
       <div className="col-center">
       <p>{props.name}</p>
-      <p>Date modified on {new Date(props.modified).toUTCString()}</p>
+      <p>Date modified on {new Date(props.modified).toLocaleString()}</p>
       </div>
       <button className="col-center" onClick={(e) =>{
         e.preventDefault();
