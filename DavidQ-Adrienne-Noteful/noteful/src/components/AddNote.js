@@ -7,7 +7,7 @@ export default function AddNote(props) {
    <div>
      <form onSubmit={(e)=>{
        e.preventDefault();
-       context.addNotes(e.target.newNote.value,e.target.content.value, props.match.params.folderId);
+       context.addNotes(e.target.newNote.value,e.target.content.value, props.folderId);
        props.history.push('/');
       }}>
        <h3>Add New Note</h3>

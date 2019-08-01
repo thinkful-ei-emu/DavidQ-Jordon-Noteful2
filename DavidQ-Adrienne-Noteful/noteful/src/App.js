@@ -45,8 +45,8 @@ export default class App extends React.Component {
       alert(error.message);
     });
   }
-  addNote =(name,content,folderId) =>{
-    Api.doFetch('folders',folderId,'POST',JSON.stringify({name,content}))
+  addNote =(name,content,folder_id) =>{
+    Api.doFetch('notes','','POST',JSON.stringify({name,content,folder_id}))
     .then((res)=>{
       console.log('new note from server:', res);
       this.setState({
@@ -88,7 +88,8 @@ export default class App extends React.Component {
             <noteContext.Provider value={{ notes: this.state.notes, deleteNote:this.deleteNote, addNotes:this.addNote }}>
               <Route exact path="/" render={(props) => { return <Main {...props} notes={this.state.notes} /> }} />
               <Route path="/folder/:folderId" render={(props) => {
-                return (<div><AddNote {...props}/><List {...props} notes={this.state.notes.filter((note)=>String(note.folder_id) === window.location.pathname.split('/')[2])} folderId={props.match.params.folderId} /></div>)
+                return (<div><AddNote {...props} folderId={props.match.params.folderId}/><List {...props} notes={this.state.notes.filter((note)=> String(note.folder_id) === window.location.pathname.split('/')[2]
+                )} folderId={props.match.params.folderId} /></div>)
               }} />
               <Route path="/note/:noteId" render={(props) => {
                 return <NotePage {...props} note={this.state.notes.find((note) => {
